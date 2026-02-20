@@ -38,18 +38,20 @@ const Navbar = () => {
             </div>
 
             <div className="nav-links">
-                <Link to="/" style={navLinkStyle('/')}>📊 Overview</Link>
-                <Link to="/content" style={navLinkStyle('/content')}>📄 My Pages</Link>
-
-                {/* Admin-only link */}
-                {user.role === 'admin' && (
-                    <Link to="/admin" style={{
-                        ...navLinkStyle('/admin'),
-                        color: isActive('/admin') ? '#b45309' : '#d97706',
-                        background: isActive('/admin') ? '#fef3c7' : 'transparent',
-                    }}>
-                        👑 Admin Panel
-                    </Link>
+                {/* Regular user: Overview is their home (logo handles it), show My Pages */}
+                {user.role !== 'admin' ? (
+                    <Link to="/content" style={navLinkStyle('/content')}>📄 My Pages</Link>
+                ) : (
+                    <>
+                        <Link to="/content" style={navLinkStyle('/content')}>📄 All Pages</Link>
+                        <Link to="/admin" style={{
+                            ...navLinkStyle('/admin'),
+                            color: isActive('/admin') ? '#b45309' : '#d97706',
+                            background: isActive('/admin') ? '#fef3c7' : 'transparent',
+                        }}>
+                            👑 Admin Panel
+                        </Link>
+                    </>
                 )}
 
                 <div style={{ width: '1px', height: '20px', background: 'var(--border-color)' }} />
