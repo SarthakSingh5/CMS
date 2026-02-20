@@ -1,12 +1,35 @@
 import Content from '../models/contentModel.js';
 
+// Strip HTML tags to produce plain-text excerpt
+const stripHtml = (html) => {
+    if (!html) return '';
+    return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 200);
+};
+
 // @desc    Get all content
 // @route   GET /api/content
 // @access  Public
 export const getContents = async (req, res) => {
     try {
-        const contents = await Content.find().populate('author', 'username email');
+        const contents = await Content.find()
+            .populate('author', 'username email')
+            .sort({ createdAt: -1 });
         res.status(200).json(contents);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Get single content by ID
+// @route   GET /api/content/:id
+// @access  Public
+export const getContentById = async (req, res) => {
+    try {
+        const content = await Content.findById(req.params.id).populate('author', 'username email');
+        if (!content) {
+            return res.status(404).json({ message: 'Content not found' });
+        }
+        res.status(200).json(content);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -16,17 +39,19 @@ export const getContents = async (req, res) => {
 // @route   POST /api/content
 // @access  Private
 export const createContent = async (req, res) => {
-    const { title, body, status } = req.body;
+    const { title, gjsHtml, gjsCss, status } = req.body;
 
-    if (!title || !body) {
-        return res.status(400).json({ message: 'Please add all fields' });
+    if (!title) {
+        return res.status(400).json({ message: 'Please add a title' });
     }
 
     try {
         const content = await Content.create({
             title,
-            body,
-            status,
+            gjsHtml: gjsHtml || '',
+            gjsCss: gjsCss || '',
+            body: stripHtml(gjsHtml),
+            status: status || 'Draft',
             author: req.user.id,
         });
         res.status(201).json(content);
@@ -46,20 +71,26 @@ export const updateContent = async (req, res) => {
             return res.status(404).json({ message: 'Content not found' });
         }
 
-        // Check for user
         if (!req.user) {
             return res.status(401).json({ message: 'User not found' });
         }
 
-        // Make sure the logged in user matches the content author or is admin
         if (content.author.toString() !== req.user.id && req.user.role !== 'admin') {
             return res.status(401).json({ message: 'User not authorized' });
         }
 
+        const { title, gjsHtml, gjsCss, status } = req.body;
+
         const updatedContent = await Content.findByIdAndUpdate(
             req.params.id,
-            req.body,
-            { new: true }
+            {
+                title: title || content.title,
+                gjsHtml: gjsHtml !== undefined ? gjsHtml : content.gjsHtml,
+                gjsCss: gjsCss !== undefined ? gjsCss : content.gjsCss,
+                body: gjsHtml !== undefined ? stripHtml(gjsHtml) : content.body,
+                status: status || content.status,
+            },
+            { new: true, runValidators: true }
         );
 
         res.status(200).json(updatedContent);
@@ -79,18 +110,15 @@ export const deleteContent = async (req, res) => {
             return res.status(404).json({ message: 'Content not found' });
         }
 
-        // Check for user
         if (!req.user) {
             return res.status(401).json({ message: 'User not found' });
         }
 
-        // Make sure the logged in user matches the content author or is admin
         if (content.author.toString() !== req.user.id && req.user.role !== 'admin') {
             return res.status(401).json({ message: 'User not authorized' });
         }
 
         await content.deleteOne();
-
         res.status(200).json({ id: req.params.id });
     } catch (error) {
         res.status(500).json({ message: error.message });

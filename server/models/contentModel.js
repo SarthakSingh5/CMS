@@ -5,9 +5,19 @@ const contentSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add a title'],
     },
+    // GrapesJS editor output
+    gjsHtml: {
+        type: String,
+        default: '',
+    },
+    gjsCss: {
+        type: String,
+        default: '',
+    },
+    // Auto-generated plain-text preview for content list cards
     body: {
         type: String,
-        required: [true, 'Please add some content'],
+        default: '',
     },
     author: {
         type: mongoose.Schema.Types.ObjectId,

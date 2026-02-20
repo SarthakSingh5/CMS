@@ -5,7 +5,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import PrivateRoute from './components/PrivateRoute';
 import ContentList from './pages/ContentList';
-import ContentForm from './pages/ContentForm';
+import PageBuilder from './pages/PageBuilder';
+import PageViewer from './pages/PageViewer';
 import Navbar from './components/Navbar';
 import DashboardStats from './components/DashboardStats';
 import './App.css';
@@ -20,11 +21,12 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/view/:id" element={<PageViewer />} />
               <Route path="/" element={<PrivateRoute />}>
                 <Route index element={<DashboardStats />} />
                 <Route path="content" element={<ContentList />} />
-                <Route path="content/new" element={<ContentForm />} />
-                <Route path="content/edit/:id" element={<ContentForm />} />
+                <Route path="content/new" element={<PageBuilder />} />
+                <Route path="content/edit/:id" element={<PageBuilder />} />
               </Route>
             </Routes>
           </div>
