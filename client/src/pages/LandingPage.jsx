@@ -49,7 +49,7 @@ const LandingPage = () => {
 
                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.3)', borderRadius: '999px', padding: '6px 18px', fontSize: '0.82rem', fontWeight: 600, color: '#a5b4fc', marginBottom: '2rem' }}>
                     <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#6366f1', display: 'inline-block', animation: 'pulse 2s infinite' }} />
-                    No-code Website Builder · CMS Platform
+                    No-code Website Builder · Forged Platform
                 </div>
 
                 <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: 900, lineHeight: 1.1, marginBottom: '1.5rem', letterSpacing: '-0.03em' }}>

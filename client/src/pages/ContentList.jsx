@@ -103,7 +103,7 @@ const ContentList = () => {
                     )}
                 </div>
                 {user && (
-                    <Link to="/content/new" className="button btn-primary" style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', textDecoration: 'none', color: 'white', backgroundColor: 'var(--primary-color)' }}>
+                    <Link to="/dashboard/content/new" className="button btn-primary" style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', textDecoration: 'none', color: 'white', backgroundColor: 'var(--primary-color)' }}>
                         + Create New
                     </Link>
                 )}

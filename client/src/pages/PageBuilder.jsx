@@ -22,70 +22,71 @@ const PageBuilder = () => {
         // Prevent double-init in dev strict mode
         if (editorRef.current) return;
 
-        const editor = grapesjs.init({
-            container: containerRef.current,
-            height: 'calc(100vh - 140px)',
-            width: 'auto',
-            storageManager: false, // We handle saving manually
-            plugins: [gjsBlocksBasic],
-            pluginsOpts: {
-                [gjsBlocksBasic]: {
-                    blocks: ['column1', 'column2', 'column3', 'column3-7', 'text', 'link', 'image', 'video', 'map'],
-                    flexGrid: true,
-                }
-            },
-            canvas: {
-                styles: [
-                    'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap',
-                ],
-            },
-            styleManager: {
-                sectors: [
-                    {
-                        name: 'General',
-                        open: true,
-                        properties: [
-                            'float', 'display', 'position', 'top', 'right', 'left', 'bottom',
-                        ],
-                    },
-                    {
-                        name: 'Dimension',
-                        open: false,
-                        properties: ['width', 'height', 'max-width', 'min-height', 'margin', 'padding'],
-                    },
-                    {
-                        name: 'Typography',
-                        open: false,
-                        properties: [
-                            'font-family', 'font-size', 'font-weight', 'letter-spacing',
-                            'color', 'line-height', 'text-align', 'text-decoration', 'text-shadow',
-                        ],
-                    },
-                    {
-                        name: 'Decorations',
-                        open: false,
-                        properties: ['background-color', 'border-radius', 'border', 'box-shadow', 'background'],
-                    },
-                ],
-            },
-        });
+        const initEditor = () => {
+            const editor = grapesjs.init({
+                container: containerRef.current,
+                height: 'calc(100vh - 140px)',
+                width: 'auto',
+                storageManager: false, // We handle saving manually
+                plugins: [gjsBlocksBasic],
+                pluginsOpts: {
+                    [gjsBlocksBasic]: {
+                        blocks: ['column1', 'column2', 'column3', 'column3-7', 'text', 'link', 'image', 'video', 'map'],
+                        flexGrid: true,
+                    }
+                },
+                canvas: {
+                    styles: [
+                        'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap',
+                    ],
+                },
+                styleManager: {
+                    sectors: [
+                        {
+                            name: 'General',
+                            open: true,
+                            properties: [
+                                'float', 'display', 'position', 'top', 'right', 'left', 'bottom',
+                            ],
+                        },
+                        {
+                            name: 'Dimension',
+                            open: false,
+                            properties: ['width', 'height', 'max-width', 'min-height', 'margin', 'padding'],
+                        },
+                        {
+                            name: 'Typography',
+                            open: false,
+                            properties: [
+                                'font-family', 'font-size', 'font-weight', 'letter-spacing',
+                                'color', 'line-height', 'text-align', 'text-decoration', 'text-shadow',
+                            ],
+                        },
+                        {
+                            name: 'Decorations',
+                            open: false,
+                            properties: ['background-color', 'border-radius', 'border', 'box-shadow', 'background'],
+                        },
+                    ],
+                },
+            });
 
-        // Add custom starter blocks
-        editor.BlockManager.add('hero-section', {
-            label: '🌟 Hero',
-            category: 'Sections',
-            content: `
+            // Add custom starter blocks
+            editor.BlockManager.add('hero-section', {
+                label: '🌟 Hero',
+                category: 'Sections',
+                content: `
                 <section style="background:linear-gradient(135deg,#6366f1,#a855f7);padding:80px 20px;text-align:center;color:white;">
                     <h1 style="font-size:3rem;font-weight:800;margin-bottom:1rem;font-family:Inter,sans-serif;">Welcome to My Site</h1>
                     <p style="font-size:1.3rem;opacity:0.9;margin-bottom:2rem;">Build stunning pages with no code.</p>
                     <a href="#" style="background:white;color:#6366f1;padding:14px 32px;border-radius:50px;font-weight:700;text-decoration:none;font-size:1rem;">Get Started</a>
                 </section>`,
-        });
+            });
 
-        editor.BlockManager.add('features-section', {
-            label: '💎 Features',
-            category: 'Sections',
-            content: `
+            editor.BlockManager.add('features-section', {
+                label: '💎 Features',
+                category: 'Sections',
+                content: `
                 <section style="padding:60px 20px;max-width:1000px;margin:0 auto;text-align:center;">
                     <h2 style="font-size:2.2rem;font-weight:700;margin-bottom:40px;font-family:Inter,sans-serif;">Our Features</h2>
                     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
@@ -103,34 +104,34 @@ const PageBuilder = () => {
                         </div>
                     </div>
                 </section>`,
-        });
+            });
 
-        editor.BlockManager.add('cta-section', {
-            label: '🚀 CTA',
-            category: 'Sections',
-            content: `
+            editor.BlockManager.add('cta-section', {
+                label: '🚀 CTA',
+                category: 'Sections',
+                content: `
                 <section style="background:#0f172a;padding:80px 20px;text-align:center;color:white;">
                     <h2 style="font-size:2.5rem;font-weight:800;margin-bottom:1rem;font-family:Inter,sans-serif;">Ready to get started?</h2>
                     <p style="opacity:0.7;margin-bottom:2rem;font-size:1.1rem;">Join thousands of users who trust our platform.</p>
                     <a href="#" style="background:#6366f1;color:white;padding:16px 40px;border-radius:50px;font-weight:700;font-size:1.1rem;text-decoration:none;">Sign Up Free →</a>
                 </section>`,
-        });
+            });
 
-        editor.BlockManager.add('testimonial-section', {
-            label: '💬 Testimonial',
-            category: 'Sections',
-            content: `
+            editor.BlockManager.add('testimonial-section', {
+                label: '💬 Testimonial',
+                category: 'Sections',
+                content: `
                 <section style="padding:60px 20px;max-width:800px;margin:0 auto;text-align:center;">
                     <blockquote style="font-size:1.6rem;font-style:italic;color:#334155;margin-bottom:24px;line-height:1.6;">"This platform completely transformed how we manage our content. Absolutely love it!"</blockquote>
                     <strong style="font-size:1.1rem;color:#1e293b;">— Sarah Connor</strong>
                     <p style="color:#64748b;margin-top:4px;">CTO, TechCorp</p>
                 </section>`,
-        });
+            });
 
-        editor.BlockManager.add('navbar-section', {
-            label: '📌 Navbar',
-            category: 'Sections',
-            content: `
+            editor.BlockManager.add('navbar-section', {
+                label: '📌 Navbar',
+                category: 'Sections',
+                content: `
                 <nav style="background:white;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 10px rgba(0,0,0,0.1);font-family:Inter,sans-serif;">
                     <a href="#" style="font-size:1.3rem;font-weight:700;color:#6366f1;text-decoration:none;">Brand</a>
                     <div style="display:flex;gap:24px;">
@@ -139,44 +140,50 @@ const PageBuilder = () => {
                         <a href="#" style="color:#64748b;text-decoration:none;font-weight:500;">Contact</a>
                     </div>
                 </nav>`,
-        });
+            });
 
-        editor.BlockManager.add('footer-section', {
-            label: '🔻 Footer',
-            category: 'Sections',
-            content: `
+            editor.BlockManager.add('footer-section', {
+                label: '🔻 Footer',
+                category: 'Sections',
+                content: `
                 <footer style="background:#1e293b;color:#94a3b8;padding:40px 20px;text-align:center;font-family:Inter,sans-serif;">
                     <p style="font-size:1.2rem;color:white;font-weight:600;margin-bottom:8px;">Brand Name</p>
                     <p style="margin-bottom:16px;">Building the future, one page at a time.</p>
                     <p style="font-size:0.85rem;">© 2025 Brand Name. All rights reserved.</p>
                 </footer>`,
-        });
+            });
 
-        editorRef.current = editor;
+            editorRef.current = editor;
 
-        // Load existing page data in edit mode
-        const loadPage = async () => {
-            if (!isEditMode) return;
-            try {
-                const { data } = await axios.get(`/api/content/${id}`);
-                setPageTitle(data.title || '');
-                setStatus(data.status || 'Draft');
-                if (data.gjsHtml) {
-                    editor.setComponents(data.gjsHtml);
+            // Load existing page data in edit mode
+            const loadPage = async () => {
+                if (!isEditMode) return;
+                try {
+                    const { data } = await axios.get(`/api/content/${id}`);
+                    setPageTitle(data.title || '');
+                    setStatus(data.status || 'Draft');
+                    if (data.gjsHtml) {
+                        editor.setComponents(data.gjsHtml);
+                    }
+                    if (data.gjsCss) {
+                        editor.setStyle(data.gjsCss);
+                    }
+                } catch (err) {
+                    console.error('Failed to load page', err);
                 }
-                if (data.gjsCss) {
-                    editor.setStyle(data.gjsCss);
-                }
-            } catch (err) {
-                console.error('Failed to load page', err);
-            }
+            };
+
+            loadPage();
         };
 
-        loadPage();
+        const timer = setTimeout(initEditor, 100);
 
         return () => {
-            editor.destroy();
-            editorRef.current = null;
+            clearTimeout(timer);
+            if (editorRef.current) {
+                editorRef.current.destroy();
+                editorRef.current = null;
+            }
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -248,7 +255,7 @@ const PageBuilder = () => {
     };
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 80px)', margin: '-20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 80px)' }}>
             {/* Top Bar */}
             <div style={{
                 display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 20px',
@@ -308,7 +315,7 @@ const PageBuilder = () => {
             </div>
 
             {/* GrapesJS Canvas */}
-            <div ref={containerRef} style={{ flex: 1 }} />
+            <div ref={containerRef} style={{ flex: 1, minHeight: '500px', background: '#f8fafc' }} />
         </div>
     );
 };

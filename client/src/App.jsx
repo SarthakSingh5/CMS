@@ -19,13 +19,17 @@ import './App.css';
 // Wrapper that hides the Navbar on the landing page
 const AppShell = () => {
   const location = useLocation();
-  const hiddenNavPaths = ['/', '/login', '/register'];
-  const showNav = !hiddenNavPaths.includes(location.pathname);
+  const showNav = !['/', '/login', '/register'].includes(location.pathname);
+
+  // Paths that should NOT be wrapped in .container (full width)
+  const fullWidthPaths = ['/', '/login', '/register', '/dashboard/content/new'];
+  const isEditPage = location.pathname.startsWith('/dashboard/content/edit/');
+  const isFullWidth = fullWidthPaths.includes(location.pathname) || isEditPage;
 
   return (
     <>
       {showNav && <Navbar />}
-      <div className={showNav ? 'container' : ''} style={showNav ? { padding: '20px' } : {}}>
+      <div className={isFullWidth ? '' : 'container'} style={showNav ? { padding: isFullWidth ? '0' : '20px' } : {}}>
         <Routes>
           {/* Public */}
           <Route path="/" element={<LandingPage />} />

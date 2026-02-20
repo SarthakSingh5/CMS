@@ -68,7 +68,7 @@ const DashboardStats = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <div>
                     <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--text-main)' }}>
-                        👋 Welcome back, {user?.username}!
+                        👋 Welcome to Forged, {user?.username}!
                     </h1>
                     <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>
                         Here's a summary of your pages
@@ -133,8 +133,8 @@ const DashboardStats = () => {
             ) : (
                 /* Empty state for new users */
                 <div style={{ background: 'var(--card-bg)', border: '2px dashed var(--border-color)', borderRadius: '14px', padding: '3rem', textAlign: 'center', marginBottom: '2rem' }}>
-                    <p style={{ fontSize: '2.5rem', marginBottom: '12px' }}>🚀</p>
-                    <h3 style={{ color: 'var(--text-main)', marginBottom: '8px', fontWeight: 700 }}>Build your first page</h3>
+                    <h1 style={{ fontSize: '2.5rem', marginBottom: '12px' }}>🚀</h1>
+                    <h3 style={{ color: 'var(--text-main)', marginBottom: '8px', fontWeight: 700 }}>Start your Forged journey</h3>
                     <p style={{ color: 'var(--text-secondary)', marginBottom: '20px' }}>Drag and drop blocks to create a professional website — no coding needed.</p>
                     <Link to="/dashboard/content/new" style={{ background: '#6366f1', color: 'white', padding: '12px 28px', borderRadius: '8px', textDecoration: 'none', fontWeight: 700 }}>
                         Get Started →
