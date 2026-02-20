@@ -1,42 +1,296 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* ... Previous Auth Styles ... */
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.nav-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  letter-spacing: -0.025em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: var(--text-secondary);
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius);
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--primary-color);
+  background-color: var(--bg-color);
+  text-decoration: none;
+}
+
+.btn-logout {
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  width: auto;
+  margin-top: 0;
+}
+
+.btn-logout:hover {
+  background-color: #ef4444;
+  color: white;
+  border-color: #ef4444;
+}
+
+/* Dashboard */
+.dashboard-header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.stat-card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary-color);
+}
+
+.stat-title {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* Content List */
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.btn-primary {
+  width: auto;
+  margin-top: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.content-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow);
+  transition: all 0.2s ease;
+}
+
+.content-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.content-card h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+}
+
+.meta-info {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-draft {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+[data-theme="dark"] .status-draft {
+  background-color: #334155;
+  color: #cbd5e1;
+}
+
+.status-published {
+  background-color: #d1fae5;
+  color: #059669;
+}
+
+[data-theme="dark"] .status-published {
+  background-color: #064e3b;
+  color: #34d399;
+}
+
+.content-excerpt {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 0.5rem;
+  margin-top: 0;
+}
+
+.btn-outline:hover {
+  background-color: var(--bg-color);
+  border-color: var(--text-secondary);
+}
+
+.btn-danger {
+  background: transparent;
+  border: 1px solid #fee2e2;
+  color: #ef4444;
+  padding: 0.5rem;
+  margin-top: 0;
+}
+
+.btn-danger:hover {
+  background-color: #fef2f2;
+  border-color: #ef4444;
+}
+
+/* Auth Styles Backup (Keep existing auth styles) */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 20px;
+}
+
+.auth-card {
+  background: var(--card-bg);
+  padding: 2.5rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-card h1 {
   text-align: center;
+  margin-bottom: 2rem;
+  color: var(--text-main);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.form-group {
+  margin-bottom: 1.5rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  color: var(--text-main);
+  font-size: 1rem;
+  font-family: inherit;
 }
 
-.card {
-  padding: 2em;
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
-.read-the-docs {
-  color: #888;
+button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--primary-hover);
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 }

@@ -21,44 +21,49 @@ const Register = () => {
     };
 
     return (
-        <div className="container">
-            <h1>Register</h1>
-            <form onSubmit={onSubmit}>
-                <div className="form-group">
-                    <label>Username</label>
-                    <input
-                        type="text"
-                        name="username"
-                        value={username}
-                        onChange={onChange}
-                        required
-                    />
+        <div className="auth-container">
+            <div className="auth-card">
+                <h1>Create Account</h1>
+                <form onSubmit={onSubmit}>
+                    <div className="form-group">
+                        <label>Username</label>
+                        <input
+                            type="text"
+                            name="username"
+                            value={username}
+                            onChange={onChange}
+                            placeholder="Choose a username"
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Email Address</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={email}
+                            onChange={onChange}
+                            placeholder="Enter your email"
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            value={password}
+                            onChange={onChange}
+                            placeholder="Create a password"
+                            required
+                        />
+                    </div>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <div className="auth-footer">
+                    Already have an account? <Link to="/login">Sign in</Link>
                 </div>
-                <div className="form-group">
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={email}
-                        onChange={onChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={password}
-                        onChange={onChange}
-                        required
-                    />
-                </div>
-                <button type="submit">Register</button>
-            </form>
-            <p>
-                Already have an account? <Link to="/login">Login</Link>
-            </p>
+            </div>
         </div>
     );
 };

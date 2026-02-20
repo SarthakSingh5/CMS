@@ -22,13 +22,6 @@ const ContentForm = () => {
                         headers: { Authorization: `Bearer ${token}` },
                     };
                     const { data } = await axios.get('/api/content', config);
-                    // Filter to find the specific content since we don't have a public get-by-id yet, 
-                    // or we can just fetch all and filter.
-                    // Better practice: Implement get-by-id API. But for now, let's filter from list or fetch.
-                    // Actually, our API routes don't have public GET /:id. We only have PUT /:id and DELETE /:id.
-                    // We should add GET /:id or just filter from the full list for simplicity if list is small.
-                    // Let's assume we can fetch all and find it, or add GET /:id to backend.
-                    // For now, let's filter from the full list response which is public.
                     const contentValues = data.find(c => c._id === id);
                     if (contentValues) {
                         setFormData({
@@ -71,38 +64,53 @@ const ContentForm = () => {
     };
 
     return (
-        <div className="container">
-            <h1>{isEditMode ? 'Edit Content' : 'Create New Content'}</h1>
-            <form onSubmit={onSubmit}>
-                <div className="form-group">
-                    <label>Title</label>
-                    <input
-                        type="text"
-                        name="title"
-                        value={title}
-                        onChange={onChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Status</label>
-                    <select name="status" value={status} onChange={onChange}>
-                        <option value="Draft">Draft</option>
-                        <option value="Published">Published</option>
-                    </select>
-                </div>
-                <div className="form-group">
-                    <label>Body</label>
-                    <textarea
-                        name="body"
-                        value={body}
-                        onChange={onChange}
-                        required
-                        rows="5"
-                    ></textarea>
-                </div>
-                <button type="submit">{isEditMode ? 'Update' : 'Create'}</button>
-            </form>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div className="auth-card" style={{ maxWidth: '800px' }}>
+                <h1 style={{ textAlign: 'left', marginBottom: '1.5rem' }}>{isEditMode ? 'Edit Content' : 'Create New Content'}</h1>
+                <form onSubmit={onSubmit}>
+                    <div className="form-group">
+                        <label>Title</label>
+                        <input
+                            type="text"
+                            name="title"
+                            value={title}
+                            onChange={onChange}
+                            placeholder="Enter post title"
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Status</label>
+                        <select name="status" value={status} onChange={onChange}>
+                            <option value="Draft">Draft</option>
+                            <option value="Published">Published</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Body Content</label>
+                        <textarea
+                            name="body"
+                            value={body}
+                            onChange={onChange}
+                            required
+                            rows="10"
+                            placeholder="Write your content here..."
+                            style={{ resize: 'vertical' }}
+                        ></textarea>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '1rem' }}>
+                        <button type="button" onClick={() => navigate('/content')} className="btn-outline" style={{ background: 'transparent', color: 'var(--text-main)', border: '1px solid var(--border-color)' }}>
+                            Cancel
+                        </button>
+                        <button type="submit">
+                            {isEditMode ? 'Update Content' : 'Publish Content'}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };

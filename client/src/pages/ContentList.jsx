@@ -21,7 +21,7 @@ const ContentList = () => {
     };
 
     const deleteContent = async (id) => {
-        if (window.confirm('Are you sure?')) {
+        if (window.confirm('Are you sure you want to delete this content?')) {
             try {
                 const config = {
                     headers: {
@@ -38,30 +38,53 @@ const ContentList = () => {
     };
 
     return (
-        <div className="container">
-            <h1>Content Management</h1>
-            {user && (
-                <Link to="/content/new" className="btn btn-primary">
-                    Create New Content
-                </Link>
-            )}
-            <div className="content-list">
+        <div className="container" style={{ padding: 0 }}>
+            <div className="content-header">
+                <h1>Content Library</h1>
+                {user && (
+                    <Link to="/content/new" className="button btn-primary" style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', textDecoration: 'none', color: 'white', backgroundColor: 'var(--primary-color)' }}>
+                        + Create New
+                    </Link>
+                )}
+            </div>
+
+            <div className="content-grid">
                 {contents.map((content) => (
-                    <div key={content._id} className="card">
+                    <div key={content._id} className="content-card">
+                        <div className="meta-info">
+                            <span className={`status-badge status-${content.status.toLowerCase()}`}>
+                                {content.status}
+                            </span>
+                            <span>{new Date(content.createdAt).toLocaleDateString()}</span>
+                        </div>
+
                         <h2>{content.title}</h2>
-                        <p>Status: {content.status}</p>
-                        <p>Author: {content.author?.username || 'Unknown'}</p>
-                        <p>{content.body.substring(0, 100)}...</p>
+                        <div className="content-excerpt">
+                            {content.body.substring(0, 100)}...
+                        </div>
+
+                        <div className="meta-info">
+                            <span>By {content.author?.username || 'Unknown'}</span>
+                        </div>
 
                         {(user && (user.role === 'admin' || user._id === content.author?._id)) && (
-                            <div className="actions">
-                                <Link to={`/content/edit/${content._id}`}>Edit</Link>
-                                <button onClick={() => deleteContent(content._id)}>Delete</button>
+                            <div className="card-actions">
+                                <Link to={`/content/edit/${content._id}`} className="button btn-outline" style={{ textDecoration: 'none', textAlign: 'center', borderRadius: '6px' }}>
+                                    Edit
+                                </Link>
+                                <button onClick={() => deleteContent(content._id)} className="btn-danger" style={{ borderRadius: '6px' }}>
+                                    Delete
+                                </button>
                             </div>
                         )}
                     </div>
                 ))}
             </div>
+            {contents.length === 0 && (
+                <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)' }}>
+                    No content found. Start by creating a new post.
+                </div>
+            )}
         </div>
     );
 };

@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
     const { user, logout } = useContext(AuthContext);
@@ -8,27 +9,19 @@ const Navbar = () => {
     if (!user) return null;
 
     return (
-        <nav style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            padding: '1rem',
-            borderBottom: '1px solid #ccc',
-            marginBottom: '2rem'
-        }}>
+        <nav className="navbar">
             <div className="logo">
-                <Link to="/" style={{ fontSize: '1.5rem', fontWeight: 'bold', textDecoration: 'none', color: '#333' }}>CMS Dashboard</Link>
+                <Link to="/" className="nav-brand">CMS Dashboard</Link>
             </div>
-            <div className="links">
-                <Link to="/" style={{ marginRight: '1rem' }}>Home</Link>
-                <Link to="/content" style={{ marginRight: '1rem' }}>Content</Link>
-                <button onClick={logout} style={{
-                    padding: '5px 10px',
-                    cursor: 'pointer',
-                    backgroundColor: '#ff5252',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '4px'
-                }}>Logout</button>
+            <div className="nav-links">
+                <Link to="/" className="nav-link">Overview</Link>
+                <Link to="/content" className="nav-link">Content</Link>
+                <div style={{ width: '1px', height: '20px', background: 'var(--border-color)' }}></div>
+                <ThemeToggle />
+                <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                    {user.username}
+                </span>
+                <button onClick={logout} className="btn-logout">Logout</button>
             </div>
         </nav>
     );

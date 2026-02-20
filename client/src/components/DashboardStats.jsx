@@ -29,23 +29,30 @@ const DashboardStats = () => {
 
     return (
         <div className="dashboard-stats">
-            <h2>Dashboard Overview</h2>
-            <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
-                <div className="card" style={{ padding: '20px', backgroundColor: '#f4f4f4', borderRadius: '8px' }}>
-                    <h3>Total Users</h3>
-                    <p style={{ fontSize: '2em', fontWeight: 'bold' }}>{stats.users}</p>
+            <div className="dashboard-header">
+                <h2>Dashboard Overview</h2>
+            </div>
+
+            <div className="dashboard-grid">
+                <div className="stat-card">
+                    <div className="stat-title">Total Users</div>
+                    <div className="stat-value">{stats.users}</div>
                 </div>
-                <div className="card" style={{ padding: '20px', backgroundColor: '#e3f2fd', borderRadius: '8px' }}>
-                    <h3>Total Content</h3>
-                    <p style={{ fontSize: '2em', fontWeight: 'bold' }}>{stats.content.total}</p>
+                <div className="stat-card">
+                    <div className="stat-title">Total Content</div>
+                    <div className="stat-value">{stats.content.total}</div>
                 </div>
-                <div className="card" style={{ padding: '20px', backgroundColor: '#e8f5e9', borderRadius: '8px' }}>
-                    <h3>Published</h3>
-                    <p style={{ fontSize: '2em', fontWeight: 'bold' }}>{stats.content.byStatus?.Published || 0}</p>
+                <div className="stat-card">
+                    <div className="stat-title">Published</div>
+                    <div className="stat-value" style={{ color: '#10b981' }}>
+                        {stats.content.byStatus?.Published || 0}
+                    </div>
                 </div>
-                <div className="card" style={{ padding: '20px', backgroundColor: '#fff3e0', borderRadius: '8px' }}>
-                    <h3>Drafts</h3>
-                    <p style={{ fontSize: '2em', fontWeight: 'bold' }}>{stats.content.byStatus?.Draft || 0}</p>
+                <div className="stat-card">
+                    <div className="stat-title">Drafts</div>
+                    <div className="stat-value" style={{ color: '#f59e0b' }}>
+                        {stats.content.byStatus?.Draft || 0}
+                    </div>
                 </div>
             </div>
         </div>
