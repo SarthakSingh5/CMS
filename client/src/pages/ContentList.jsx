@@ -1,12 +1,16 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useMemo } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 
 const ContentList = () => {
     const [contents, setContents] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [statusFilter, setStatusFilter] = useState('All');
     const { user } = useContext(AuthContext);
+    const { addToast } = useToast();
 
     useEffect(() => {
         fetchContents();
@@ -15,7 +19,6 @@ const ContentList = () => {
     const fetchContents = async () => {
         try {
             const { data } = await axios.get('/api/content');
-            // Admin sees all; regular user sees only their own pages
             if (user?.role === 'admin') {
                 setContents(data);
             } else {
@@ -23,10 +26,20 @@ const ContentList = () => {
             }
         } catch (error) {
             console.error('Error fetching content', error);
+            addToast('Failed to load pages', 'error');
         } finally {
             setLoading(false);
         }
     };
+
+    // Client-side search + filter
+    const filteredContents = useMemo(() => {
+        return contents.filter(c => {
+            const matchesSearch = c.title?.toLowerCase().includes(searchQuery.toLowerCase());
+            const matchesStatus = statusFilter === 'All' || c.status === statusFilter;
+            return matchesSearch && matchesStatus;
+        });
+    }, [contents, searchQuery, statusFilter]);
 
     const downloadPage = (content) => {
         const title = content.title || 'My Website';
@@ -54,31 +67,38 @@ const ContentList = () => {
         a.download = `${title.replace(/\s+/g, '-').toLowerCase()}.html`;
         a.click();
         URL.revokeObjectURL(url);
+        addToast(`"${title}" downloaded successfully!`, 'success');
     };
 
-    const deleteContent = async (id) => {
-        if (window.confirm('Are you sure you want to delete this page?')) {
+    const deleteContent = async (id, title) => {
+        if (window.confirm(`Delete "${title}"? This cannot be undone.`)) {
             try {
                 const config = { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } };
                 await axios.delete(`/api/content/${id}`, config);
-                fetchContents();
+                setContents(prev => prev.filter(c => c._id !== id));
+                addToast(`"${title}" deleted`, 'info');
             } catch (error) {
                 console.error('Error deleting content', error);
-                alert('Failed to delete content');
+                addToast('Failed to delete page', 'error');
             }
         }
     };
 
-    if (loading) return <div style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-secondary)' }}>Loading...</div>;
+    if (loading) return (
+        <div style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+            Loading pages...
+        </div>
+    );
 
     return (
         <div className="container" style={{ padding: 0 }}>
+            {/* Header */}
             <div className="content-header">
                 <div>
                     <h1>{user?.role === 'admin' ? 'All Pages' : 'My Pages'}</h1>
                     {user?.role === 'admin' && (
                         <p style={{ color: 'var(--text-secondary)', marginTop: '4px', fontSize: '0.9rem' }}>
-                            Viewing all {contents.length} pages across all users
+                            {filteredContents.length} of {contents.length} pages
                         </p>
                     )}
                 </div>
@@ -89,8 +109,41 @@ const ContentList = () => {
                 )}
             </div>
 
+            {/* Search + Filter Bar */}
+            <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
+                <div style={{ position: 'relative', flex: 1, minWidth: '200px' }}>
+                    <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)', fontSize: '1rem' }}>🔍</span>
+                    <input
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                        placeholder="Search pages by title..."
+                        style={{
+                            width: '100%', padding: '10px 14px 10px 38px',
+                            border: '1px solid var(--border-color)', borderRadius: '8px',
+                            background: 'var(--card-bg)', color: 'var(--text-main)',
+                            fontSize: '0.95rem',
+                        }}
+                    />
+                </div>
+                <div style={{ display: 'flex', border: '1px solid var(--border-color)', borderRadius: '8px', overflow: 'hidden' }}>
+                    {['All', 'Published', 'Draft'].map(s => (
+                        <button
+                            key={s}
+                            onClick={() => setStatusFilter(s)}
+                            style={{
+                                padding: '10px 18px', border: 'none', margin: 0, borderRadius: 0, width: 'auto',
+                                background: statusFilter === s ? '#6366f1' : 'var(--card-bg)',
+                                color: statusFilter === s ? 'white' : 'var(--text-secondary)',
+                                fontWeight: statusFilter === s ? 700 : 400, fontSize: '0.9rem',
+                            }}
+                        >{s}</button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Content Grid */}
             <div className="content-grid">
-                {contents.map((content) => (
+                {filteredContents.map((content) => (
                     <div key={content._id} className="content-card">
                         <div className="meta-info">
                             <span className={`status-badge status-${content.status.toLowerCase()}`}>
@@ -123,7 +176,7 @@ const ContentList = () => {
                                     <Link to={`/content/edit/${content._id}`} className="button btn-outline" style={{ textDecoration: 'none', textAlign: 'center', borderRadius: '6px' }}>
                                         Edit
                                     </Link>
-                                    <button onClick={() => deleteContent(content._id)} className="btn-danger" style={{ borderRadius: '6px' }}>
+                                    <button onClick={() => deleteContent(content._id, content.title)} className="btn-danger" style={{ borderRadius: '6px' }}>
                                         Delete
                                     </button>
                                 </>
@@ -133,7 +186,15 @@ const ContentList = () => {
                 ))}
             </div>
 
-            {contents.length === 0 && (
+            {/* Empty States */}
+            {filteredContents.length === 0 && searchQuery && (
+                <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)' }}>
+                    <p style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🔍</p>
+                    <p style={{ fontWeight: 600 }}>No pages match "{searchQuery}"</p>
+                    <p style={{ fontSize: '0.9rem', marginTop: '8px' }}>Try a different search term</p>
+                </div>
+            )}
+            {filteredContents.length === 0 && !searchQuery && (
                 <div style={{ textAlign: 'center', padding: '5rem', color: 'var(--text-secondary)' }}>
                     <p style={{ fontSize: '3rem', marginBottom: '1rem' }}>🖼️</p>
                     <p style={{ fontSize: '1.1rem', fontWeight: 600 }}>No pages yet</p>
