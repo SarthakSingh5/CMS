@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('token', data.token);
             setUser(data);
             addToast('Logged in successfully!', 'success');
-            navigate('/');
+            navigate('/dashboard');
         } catch (error) {
             const message =
                 error.response?.data?.message || 'Login failed. Please try again.';
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('token', data.token);
             setUser(data);
             addToast('Account created successfully!', 'success');
-            navigate('/');
+            navigate('/dashboard');
         } catch (error) {
             const message =
                 error.response?.data?.message || 'Registration failed. Please try again.';

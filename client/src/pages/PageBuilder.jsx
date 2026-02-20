@@ -202,7 +202,7 @@ const PageBuilder = () => {
             } else {
                 await axios.post('/api/content', payload, config);
             }
-            navigate('/content');
+            navigate('/dashboard/content');
         } catch (err) {
             console.error(err);
             setError(err.response?.data?.message || 'Failed to save page.');
@@ -256,7 +256,7 @@ const PageBuilder = () => {
                 flexShrink: 0,
             }}>
                 <button
-                    onClick={() => navigate('/content')}
+                    onClick={() => navigate('/dashboard/content')}
                     style={{ background: 'none', border: '1px solid var(--border-color)', color: 'var(--text-secondary)', padding: '8px 14px', borderRadius: '6px', width: 'auto' }}
                 >
                     ← Back

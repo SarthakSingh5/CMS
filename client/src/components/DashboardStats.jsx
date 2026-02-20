@@ -75,7 +75,7 @@ const DashboardStats = () => {
                     </p>
                 </div>
                 <Link
-                    to="/content/new"
+                    to="/dashboard/content/new"
                     style={{ background: '#6366f1', color: 'white', padding: '10px 20px', borderRadius: '8px', textDecoration: 'none', fontWeight: 700 }}
                 >
                     + Create New Page
@@ -136,7 +136,7 @@ const DashboardStats = () => {
                     <p style={{ fontSize: '2.5rem', marginBottom: '12px' }}>🚀</p>
                     <h3 style={{ color: 'var(--text-main)', marginBottom: '8px', fontWeight: 700 }}>Build your first page</h3>
                     <p style={{ color: 'var(--text-secondary)', marginBottom: '20px' }}>Drag and drop blocks to create a professional website — no coding needed.</p>
-                    <Link to="/content/new" style={{ background: '#6366f1', color: 'white', padding: '12px 28px', borderRadius: '8px', textDecoration: 'none', fontWeight: 700 }}>
+                    <Link to="/dashboard/content/new" style={{ background: '#6366f1', color: 'white', padding: '12px 28px', borderRadius: '8px', textDecoration: 'none', fontWeight: 700 }}>
                         Get Started →
                     </Link>
                 </div>
@@ -149,7 +149,7 @@ const DashboardStats = () => {
                         <p style={{ fontWeight: 700, color: 'var(--text-main)' }}>Manage your pages</p>
                         <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>View, edit, export or delete your pages</p>
                     </div>
-                    <Link to="/content" style={{ background: 'var(--bg-color)', border: '1px solid var(--border-color)', color: 'var(--text-main)', padding: '10px 20px', borderRadius: '8px', textDecoration: 'none', fontWeight: 600 }}>
+                    <Link to="/dashboard/content" style={{ background: 'var(--bg-color)', border: '1px solid var(--border-color)', color: 'var(--text-main)', padding: '10px 20px', borderRadius: '8px', textDecoration: 'none', fontWeight: 600 }}>
                         My Pages →
                     </Link>
                 </div>

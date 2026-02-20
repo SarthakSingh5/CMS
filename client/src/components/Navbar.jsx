@@ -9,7 +9,7 @@ const Navbar = () => {
 
     if (!user) return null;
 
-    const isActive = (path) => location.pathname === path;
+    const isActive = (path) => location.pathname === path || location.pathname.startsWith(path + '/');
 
     const navLinkStyle = (path) => ({
         textDecoration: 'none',
@@ -25,9 +25,9 @@ const Navbar = () => {
     return (
         <nav className="navbar">
             <div className="logo">
-                <Link to="/" style={{ textDecoration: 'none' }}>
+                <Link to="/dashboard" style={{ textDecoration: 'none' }}>
                     <span style={{ fontWeight: 800, fontSize: '1.2rem', color: '#6366f1' }}>
-                        🧩 CMS
+                        ✦ Forged
                     </span>
                     {user.role === 'admin' && (
                         <span style={{ background: '#fef3c7', color: '#b45309', fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: '50px', marginLeft: '8px', verticalAlign: 'middle' }}>
@@ -40,10 +40,10 @@ const Navbar = () => {
             <div className="nav-links">
                 {/* Regular user: Overview is their home (logo handles it), show My Pages */}
                 {user.role !== 'admin' ? (
-                    <Link to="/content" style={navLinkStyle('/content')}>📄 My Pages</Link>
+                    <Link to="/dashboard/content" style={navLinkStyle('/dashboard/content')}>📄 My Pages</Link>
                 ) : (
                     <>
-                        <Link to="/content" style={navLinkStyle('/content')}>📄 All Pages</Link>
+                        <Link to="/dashboard/content" style={navLinkStyle('/dashboard/content')}>📄 All Pages</Link>
                         <Link to="/admin" style={{
                             ...navLinkStyle('/admin'),
                             color: isActive('/admin') ? '#b45309' : '#d97706',

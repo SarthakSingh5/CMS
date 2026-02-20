@@ -173,7 +173,7 @@ const ContentList = () => {
                             </button>
                             {(user && (user.role === 'admin' || user._id === content.author?._id)) && (
                                 <>
-                                    <Link to={`/content/edit/${content._id}`} className="button btn-outline" style={{ textDecoration: 'none', textAlign: 'center', borderRadius: '6px' }}>
+                                    <Link to={`/dashboard/content/edit/${content._id}`} className="button btn-outline" style={{ textDecoration: 'none', textAlign: 'center', borderRadius: '6px' }}>
                                         Edit
                                     </Link>
                                     <button onClick={() => deleteContent(content._id, content.title)} className="btn-danger" style={{ borderRadius: '6px' }}>

@@ -56,7 +56,7 @@ const ContentForm = () => {
             } else {
                 await axios.post('/api/content', formData, config);
             }
-            navigate('/content');
+            navigate('/dashboard/content');
         } catch (error) {
             console.error('Error saving content', error);
             alert('Failed to save content');
