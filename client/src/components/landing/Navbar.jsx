@@ -33,10 +33,11 @@ export function Navbar() {
         </Link>
 
         {/* Navigation Actions */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 shrink-0">
           <button
             onClick={toggleTheme}
-            className="w-9 h-9 rounded-lg flex items-center justify-center text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+            type="button"
+            className="w-9 h-9 !bg-transparent !p-0 rounded-lg flex items-center justify-center text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors shrink-0 !border-none cursor-pointer"
             aria-label="Toggle theme"
           >
             {theme === "dark" ? (
@@ -50,14 +51,14 @@ export function Navbar() {
             <>
               <Link
                 to="/login"
-                className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hidden sm:block transition-colors"
+                className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hidden sm:block whitespace-nowrap transition-colors"
               >
                 Log in
               </Link>
-              <div className="rounded-[13px] border border-dashed border-zinc-900/20 dark:border-white/20 p-[2px]">
+              <div className="rounded-[13px] border border-dashed border-zinc-900/20 dark:border-white/20 p-[2px] shrink-0">
                 <Link
                   to="/register"
-                  className="block bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 text-sm font-semibold px-4 py-2 rounded-[11px] hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors"
+                  className="block bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 text-sm font-semibold px-4 py-2 rounded-[11px] whitespace-nowrap hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors"
                 >
                   Get Started
                 </Link>

@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap');
 @import "tailwindcss";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
@@ -103,4 +103,81 @@ body {
   background-image: 
     linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+/* Hero grid with radial mask */
+.hero-grid {
+  background-size: 28px 28px;
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 75%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 75%);
+}
+
+.dark .hero-grid, [data-theme="dark"] .hero-grid {
+  background-size: 50px 50px;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 90%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 90%);
+}
+
+/* Hero text gradient matching Porto */
+.text-gradient-hero {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to bottom, #111827, rgba(17,24,39,0.85), rgba(17,24,39,0.5));
+}
+
+.dark .text-gradient-hero, [data-theme="dark"] .text-gradient-hero {
+  background-image: linear-gradient(to bottom, #ffffff, rgba(255,255,255,0.95), rgba(255,255,255,0.7));
+}
+
+/* Shimmer wrapper (testimonial cards) */
+.shimmer-wrapper {
+  position: relative;
+  border-radius: 16px;
+  padding: 1px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.5);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+}
+
+.dark .shimmer-wrapper, [data-theme="dark"] .shimmer-wrapper {
+  background: rgba(255,255,255,0.06);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.shimmer-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%; right: -50%; bottom: -50%;
+  background: conic-gradient(from 0deg, transparent 70%, rgba(99,102,241,0.15) 80%, rgba(99,102,241,0.5) 100%);
+  animation: shimmer-spin 4s linear infinite;
+  z-index: 0;
+}
+
+.dark .shimmer-wrapper::before, [data-theme="dark"] .shimmer-wrapper::before {
+  background: conic-gradient(from 0deg, transparent 70%, rgba(99,102,241,0.2) 80%, rgba(99,102,241,0.8) 100%);
+}
+
+.shimmer-inner {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: relative;
+  z-index: 1;
+  border-radius: 15px;
+  height: 100%;
+}
+
+.dark .shimmer-inner, [data-theme="dark"] .shimmer-inner {
+  background: #0a0a0a;
+}
+
+@keyframes shimmer-spin {
+  100% { transform: rotate(360deg); }
 }

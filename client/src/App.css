@@ -271,7 +271,7 @@
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
-button {
+.auth-card button {
   width: 100%;
   padding: 0.75rem;
   background-color: var(--primary-color);
@@ -283,7 +283,7 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.auth-card button:hover {
   background-color: var(--primary-hover);
 }
 

@@ -1,0 +1,4 @@
+node_modules/
+Porto.build-main/
+.env
+dist/
