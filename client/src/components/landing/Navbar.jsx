@@ -67,7 +67,7 @@ export function Navbar() {
           ) : (
             <div className="rounded-[13px] border border-dashed border-indigo-500/30 p-[2px]">
               <Link
-                to="/dashboard"
+                to="/studio"
                 className="block bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold px-4 py-2 rounded-[11px] transition-colors"
               >
                 Open Studio

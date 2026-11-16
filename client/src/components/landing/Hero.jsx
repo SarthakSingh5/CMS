@@ -32,7 +32,7 @@ export function Hero({ isLoggedIn }) {
           {/* Primary button — deep slate */}
           <div className="rounded-[13px] border border-dashed border-slate-400/40 dark:border-slate-500/30 p-[2px] w-full sm:w-auto">
             <Link
-              to={isLoggedIn ? "/dashboard" : "/register"}
+              to={isLoggedIn ? "/studio" : "/register"}
               className="block bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-base font-semibold px-6 py-3 rounded-[11px] transition-colors duration-200 text-center hover:bg-slate-800 dark:hover:bg-white"
             >
               Start building free
