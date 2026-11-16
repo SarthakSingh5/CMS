@@ -20,7 +20,7 @@ import DocsPage from './pages/studio/DocsPage';
 import SettingsPage from './pages/studio/SettingsPage';
 import HelpPage from './pages/studio/HelpPage';
 import FeedbackPage from './pages/studio/FeedbackPage';
-import TemplatesPlaceholder from './pages/studio/TemplatesPlaceholder';
+import TemplatesPage from './pages/studio/TemplatesPage';
 import CvMakerPlaceholder from './pages/studio/CvMakerPlaceholder';
 
 import './App.css';
@@ -50,7 +50,7 @@ const AppShell = () => {
             <Route element={<StudioLayout />}>
               <Route index element={<Navigate to="/studio/docs" replace />} />
               <Route path="docs" element={<DocsPage />} />
-              <Route path="templates" element={<TemplatesPlaceholder />} />
+              <Route path="templates" element={<TemplatesPage />} />
               <Route path="cv-maker" element={<CvMakerPlaceholder />} />
               <Route path="settings" element={<SettingsPage />} />
               <Route path="help" element={<HelpPage />} />

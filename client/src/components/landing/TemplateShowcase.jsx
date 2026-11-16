@@ -24,7 +24,7 @@ export function TemplateShowcase() {
             </h2>
           </div>
           <Link
-            to="/dashboard"
+            to="/studio/templates"
             className="text-sm font-semibold text-zinc-600 dark:text-zinc-400 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-2 transition-colors"
           >
             Explore all 9 templates in Studio <ArrowRight className="w-4 h-4" />
@@ -34,7 +34,7 @@ export function TemplateShowcase() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {templates.map((t) => (
             <Link
-              to="/dashboard"
+              to="/studio/templates"
               key={t.name}
               className="glass-card group relative h-64 overflow-hidden rounded-2xl cursor-pointer flex flex-col justify-end p-2 transition-all duration-300 hover:-translate-y-1"
             >
