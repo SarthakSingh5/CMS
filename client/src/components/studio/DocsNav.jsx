@@ -31,3 +31,4 @@ export function DocsNav({ sections, activeSection, onSectionClick }) {
     </nav>
   );
 }
+
