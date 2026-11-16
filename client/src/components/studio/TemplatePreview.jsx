@@ -58,3 +58,4 @@ export function TemplatePreview({ children, contentWidth = 1280 }) {
     </div>
   );
 }
+

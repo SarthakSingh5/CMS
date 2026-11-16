@@ -97,3 +97,4 @@ export function isFreeTemplate(templateId) {
   const t = getTemplateConfig(templateId);
   return t?.price === "Free";
 }
+
