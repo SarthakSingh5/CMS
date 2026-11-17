@@ -21,6 +21,7 @@ import SettingsPage from './pages/studio/SettingsPage';
 import HelpPage from './pages/studio/HelpPage';
 import FeedbackPage from './pages/studio/FeedbackPage';
 import TemplatesPage from './pages/studio/TemplatesPage';
+import TemplateEditorPage from './pages/studio/TemplateEditorPage';
 import CvMakerPlaceholder from './pages/studio/CvMakerPlaceholder';
 
 import './App.css';
@@ -51,6 +52,7 @@ const AppShell = () => {
               <Route index element={<Navigate to="/studio/docs" replace />} />
               <Route path="docs" element={<DocsPage />} />
               <Route path="templates" element={<TemplatesPage />} />
+              <Route path="templates/:templateId" element={<TemplateEditorPage />} />
               <Route path="cv-maker" element={<CvMakerPlaceholder />} />
               <Route path="settings" element={<SettingsPage />} />
               <Route path="help" element={<HelpPage />} />
