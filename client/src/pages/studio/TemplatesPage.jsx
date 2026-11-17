@@ -7,10 +7,16 @@ import { DEFAULT_PORTFOLIO_DATA } from "../../lib/default-portfolio-data";
 
 // Live Preview Components
 import Portfolio1 from "../../portfolio-templates/portfolio-1/Portfolio1";
+import Portfolio2 from "../../portfolio-templates/portfolio-2/Portfolio2";
+import Portfolio3 from "../../portfolio-templates/portfolio-3/Portfolio3";
+import Portfolio4 from "../../portfolio-templates/portfolio-4/Portfolio4";
 
-// Live preview map (Template 1 is fully compiled, others will connect in Commits 8 & 9)
+// Live preview map (Templates 1–4 active, Templates 5–9 connect in Commit 9)
 const TEMPLATE_PREVIEWS = {
   template1: Portfolio1,
+  template2: Portfolio2,
+  template3: Portfolio3,
+  template4: Portfolio4,
 };
 
 export default function TemplatesPage() {
