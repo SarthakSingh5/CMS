@@ -10,13 +10,23 @@ import Portfolio1 from "../../portfolio-templates/portfolio-1/Portfolio1";
 import Portfolio2 from "../../portfolio-templates/portfolio-2/Portfolio2";
 import Portfolio3 from "../../portfolio-templates/portfolio-3/Portfolio3";
 import Portfolio4 from "../../portfolio-templates/portfolio-4/Portfolio4";
+import Portfolio5 from "../../portfolio-templates/portfolio-5/Portfolio5";
+import Portfolio6 from "../../portfolio-templates/portfolio-6/Portfolio6";
+import Portfolio7 from "../../portfolio-templates/portfolio-7/Portfolio7";
+import Portfolio8 from "../../portfolio-templates/portfolio-8/Portfolio8";
+import Portfolio9 from "../../portfolio-templates/portfolio-9/Portfolio9";
 
-// Live preview map (Templates 1–4 active, Templates 5–9 connect in Commit 9)
+// Live preview map for all 9 developer templates
 const TEMPLATE_PREVIEWS = {
   template1: Portfolio1,
   template2: Portfolio2,
   template3: Portfolio3,
   template4: Portfolio4,
+  template5: Portfolio5,
+  template6: Portfolio6,
+  template7: Portfolio7,
+  template8: Portfolio8,
+  template9: Portfolio9,
 };
 
 export default function TemplatesPage() {
