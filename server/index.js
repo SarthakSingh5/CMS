@@ -14,6 +14,7 @@ import statsRoutes from './routes/statsRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import portfolioRoutes from './routes/portfolioRoutes.js';
 import cvRoutes from './routes/cvRoutes.js';
+import sandboxRoutes from './routes/sandboxRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -32,6 +33,7 @@ app.use('/api/stats', statsRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/portfolio', portfolioRoutes);
 app.use('/api/cv', cvRoutes);
+app.use('/api/sandbox', sandboxRoutes);
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)

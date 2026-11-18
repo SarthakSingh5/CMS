@@ -280,11 +280,14 @@ export default function TemplateEditorPage() {
           {/* Cloud Sandbox IDE Button */}
           <button
             type="button"
-            onClick={() => {
-              addToast("Cloud sandbox editor connecting in Step 12...", "info");
+            onClick={async () => {
+              if (saveStatus === "unsaved") {
+                await handleSave();
+              }
+              navigate(`/editor?templateId=${normalizedId}`);
             }}
             className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-black/10 dark:border-white/10 text-zinc-700 dark:text-zinc-300 text-xs font-semibold hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
-            title="Open in CodeMirror 6 Cloud Sandbox"
+            title="Open in In-Browser Cloud Sandbox IDE"
           >
             <Code2 size={13} />
             <span>Sandbox</span>

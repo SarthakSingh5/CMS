@@ -23,17 +23,19 @@ import FeedbackPage from './pages/studio/FeedbackPage';
 import TemplatesPage from './pages/studio/TemplatesPage';
 import TemplateEditorPage from './pages/studio/TemplateEditorPage';
 import CvMakerPage from './pages/studio/CvMakerPage';
+import EditorPage from './pages/editor/EditorPage';
 
 import './App.css';
 
 const AppShell = () => {
   const location = useLocation();
   const isStudio = location.pathname.startsWith('/studio');
-  const showLegacyNav = !['/', '/login', '/register'].includes(location.pathname) && !isStudio;
+  const isEditor = location.pathname.startsWith('/editor');
+  const showLegacyNav = !['/', '/login', '/register'].includes(location.pathname) && !isStudio && !isEditor;
 
   const fullWidthPaths = ['/', '/login', '/register', '/dashboard/content/new'];
   const isEditPage = location.pathname.startsWith('/dashboard/content/edit/');
-  const isFullWidth = fullWidthPaths.includes(location.pathname) || isEditPage || isStudio;
+  const isFullWidth = fullWidthPaths.includes(location.pathname) || isEditPage || isStudio || isEditor;
 
   return (
     <>
@@ -59,6 +61,9 @@ const AppShell = () => {
               <Route path="feedback" element={<FeedbackPage />} />
             </Route>
           </Route>
+
+          {/* In-Browser Cloud Sandbox IDE */}
+          <Route path="/editor" element={<EditorPage />} />
 
           {/* Legacy Dashboard (Redirect default to studio) */}
           <Route path="/dashboard" element={<PrivateRoute />}>
