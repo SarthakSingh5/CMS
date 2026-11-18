@@ -191,3 +191,21 @@ body {
 @keyframes shimmer-spin {
   100% { transform: rotate(360deg); }
 }
+
+/* Print optimization for CV Maker */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  aside, nav, .print\:hidden {
+    display: none !important;
+  }
+  #cv-print-sheet {
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}

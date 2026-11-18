@@ -22,7 +22,7 @@ import HelpPage from './pages/studio/HelpPage';
 import FeedbackPage from './pages/studio/FeedbackPage';
 import TemplatesPage from './pages/studio/TemplatesPage';
 import TemplateEditorPage from './pages/studio/TemplateEditorPage';
-import CvMakerPlaceholder from './pages/studio/CvMakerPlaceholder';
+import CvMakerPage from './pages/studio/CvMakerPage';
 
 import './App.css';
 
@@ -53,7 +53,7 @@ const AppShell = () => {
               <Route path="docs" element={<DocsPage />} />
               <Route path="templates" element={<TemplatesPage />} />
               <Route path="templates/:templateId" element={<TemplateEditorPage />} />
-              <Route path="cv-maker" element={<CvMakerPlaceholder />} />
+              <Route path="cv-maker" element={<CvMakerPage />} />
               <Route path="settings" element={<SettingsPage />} />
               <Route path="help" element={<HelpPage />} />
               <Route path="feedback" element={<FeedbackPage />} />
