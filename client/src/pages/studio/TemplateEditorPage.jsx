@@ -9,10 +9,13 @@ import {
   Loader2,
   Sparkles,
   GripVertical,
+  Github,
 } from "lucide-react";
 import AuthContext from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
 import { BrowserPreview } from "../../components/studio/BrowserPreview";
+import GitHubUploadDialog from "../../components/dialogs/GitHubUploadDialog";
+import VercelDeployDialog from "../../components/dialogs/VercelDeployDialog";
 import { DEFAULT_PORTFOLIO_DATA } from "../../lib/default-portfolio-data";
 import { getTemplateConfig } from "../../lib/templates";
 
@@ -68,6 +71,8 @@ export default function TemplateEditorPage() {
   const [formKey, setFormKey] = useState(0);
   const [saving, setSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState("idle"); // idle | saving | saved
+  const [showGitHubDialog, setShowGitHubDialog] = useState(false);
+  const [showVercelDialog, setShowVercelDialog] = useState(false);
 
   // Resizable panel splitter state
   const [formWidth, setFormWidth] = useState(500);
@@ -292,6 +297,30 @@ export default function TemplateEditorPage() {
             <Code2 size={13} />
             <span>Sandbox</span>
           </button>
+
+          {/* GitHub Dialog Button */}
+          <button
+            type="button"
+            onClick={() => setShowGitHubDialog(true)}
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-black/10 dark:border-white/10 text-zinc-700 dark:text-zinc-300 text-xs font-semibold hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+            title="Export repository to GitHub"
+          >
+            <Github size={13} />
+            <span className="hidden lg:inline">GitHub</span>
+          </button>
+
+          {/* Vercel Dialog Button */}
+          <button
+            type="button"
+            onClick={() => setShowVercelDialog(true)}
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-black/10 dark:border-white/10 text-zinc-700 dark:text-zinc-300 text-xs font-semibold hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+            title="Deploy to Vercel"
+          >
+            <svg width={12} height={12} viewBox="0 0 76 65" fill="currentColor">
+              <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" />
+            </svg>
+            <span className="hidden lg:inline">Vercel</span>
+          </button>
         </div>
       </div>
 
@@ -328,6 +357,25 @@ export default function TemplateEditorPage() {
           </BrowserPreview>
         </div>
       </div>
+
+      {/* GitHub & Vercel Integration Dialogs */}
+      <GitHubUploadDialog
+        open={showGitHubDialog}
+        onOpenChange={setShowGitHubDialog}
+        source="template"
+        templateId={normalizedId}
+        portfolioData={portfolioData}
+        portfolioName={portfolioData.name || "My Portfolio"}
+      />
+
+      <VercelDeployDialog
+        open={showVercelDialog}
+        onOpenChange={setShowVercelDialog}
+        source="template"
+        templateId={normalizedId}
+        portfolioData={portfolioData}
+        portfolioName={portfolioData.name || "My Portfolio"}
+      />
     </div>
   );
 }

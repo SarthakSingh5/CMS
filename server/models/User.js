@@ -30,6 +30,18 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: '',
     },
+    githubToken: {
+        type: String,
+        default: '',
+    },
+    vercelToken: {
+        type: String,
+        default: '',
+    },
+    vercelTeamId: {
+        type: String,
+        default: '',
+    },
 }, { timestamps: true });
 
 // Encrypt password using bcrypt

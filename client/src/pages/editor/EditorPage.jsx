@@ -16,6 +16,8 @@ import CodeEditor from "../../components/editor/CodeEditor";
 import FileTabs from "../../components/editor/FileTabs";
 import FileTree from "../../components/editor/FileTree";
 import EditorPreview from "../../components/editor/EditorPreview";
+import GitHubUploadDialog from "../../components/dialogs/GitHubUploadDialog";
+import VercelDeployDialog from "../../components/dialogs/VercelDeployDialog";
 import { DEFAULT_PORTFOLIO_DATA } from "../../lib/default-portfolio-data";
 import { getTemplateConfig } from "../../lib/templates";
 
@@ -86,6 +88,8 @@ export function EditorPage() {
   // Save states
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState("saved"); // 'saving' | 'saved' | 'unsaved'
+  const [showGitHubDialog, setShowGitHubDialog] = useState(false);
+  const [showVercelDialog, setShowVercelDialog] = useState(false);
 
   // Layout resizing
   const containerRef = useRef(null);
@@ -428,9 +432,7 @@ export function EditorPage() {
 
           <button
             type="button"
-            onClick={() => {
-              addToast("GitHub Repo Export dialog connecting in Commit 13...", "info");
-            }}
+            onClick={() => setShowGitHubDialog(true)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-zinc-800 text-zinc-300 hover:bg-zinc-800 hover:text-white text-xs font-medium transition-colors cursor-pointer"
             title="Export to GitHub"
           >
@@ -440,9 +442,7 @@ export function EditorPage() {
 
           <button
             type="button"
-            onClick={() => {
-              addToast("Vercel One-Click Deploy dialog connecting in Commit 13...", "info");
-            }}
+            onClick={() => setShowVercelDialog(true)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-zinc-800 text-zinc-300 hover:bg-zinc-800 hover:text-white text-xs font-medium transition-colors cursor-pointer"
             title="Deploy to Vercel"
           >
@@ -512,6 +512,27 @@ export function EditorPage() {
           />
         </div>
       </div>
+
+      {/* GitHub & Vercel Integration Dialogs */}
+      <GitHubUploadDialog
+        open={showGitHubDialog}
+        onOpenChange={setShowGitHubDialog}
+        source="sandbox"
+        templateId={templateId}
+        sandboxId={sandboxId || undefined}
+        portfolioData={portfolioData}
+        portfolioName={portfolioData.name || "My Portfolio"}
+      />
+
+      <VercelDeployDialog
+        open={showVercelDialog}
+        onOpenChange={setShowVercelDialog}
+        source="sandbox"
+        templateId={templateId}
+        sandboxId={sandboxId || undefined}
+        portfolioData={portfolioData}
+        portfolioName={portfolioData.name || "My Portfolio"}
+      />
     </div>
   );
 }

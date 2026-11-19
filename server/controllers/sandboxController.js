@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // In-memory virtual sandboxes map: sandboxId -> SandboxState
-const activeSandboxes = new Map();
+export const activeSandboxes = new Map();
 
 // Template file resolution map
 const TEMPLATE_MAP = {

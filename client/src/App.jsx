@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { useLocation, BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -8,11 +9,14 @@ import LandingPage from './pages/LandingPage';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
 import ContentList from './pages/ContentList';
-import PageBuilder from './pages/PageBuilder';
 import PageViewer from './pages/PageViewer';
 import AdminPanel from './pages/AdminPanel';
 import Navbar from './components/Navbar';
 import DashboardStats from './components/DashboardStats';
+
+// Lazy-loaded heavy routes for optimal memory and code splitting
+const PageBuilder = lazy(() => import('./pages/PageBuilder'));
+const EditorPage = lazy(() => import('./pages/editor/EditorPage'));
 
 // Studio components
 import StudioLayout from './layouts/StudioLayout';
@@ -23,7 +27,6 @@ import FeedbackPage from './pages/studio/FeedbackPage';
 import TemplatesPage from './pages/studio/TemplatesPage';
 import TemplateEditorPage from './pages/studio/TemplateEditorPage';
 import CvMakerPage from './pages/studio/CvMakerPage';
-import EditorPage from './pages/editor/EditorPage';
 
 import './App.css';
 
@@ -41,7 +44,8 @@ const AppShell = () => {
     <>
       {showLegacyNav && <Navbar />}
       <div className={isFullWidth ? '' : 'container'} style={showLegacyNav ? { padding: isFullWidth ? '0' : '20px' } : {}}>
-        <Routes>
+        <Suspense fallback={<div className="flex h-screen w-screen items-center justify-center bg-zinc-950 text-zinc-500 font-mono text-xs">Loading...</div>}>
+          <Routes>
           {/* Public */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
@@ -79,6 +83,7 @@ const AppShell = () => {
             <Route index element={<AdminPanel />} />
           </Route>
         </Routes>
+        </Suspense>
       </div>
     </>
   );
