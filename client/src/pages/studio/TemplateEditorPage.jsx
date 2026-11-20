@@ -10,6 +10,7 @@ import {
   Sparkles,
   GripVertical,
   Github,
+  Share2,
 } from "lucide-react";
 import AuthContext from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
@@ -296,6 +297,22 @@ export default function TemplateEditorPage() {
           >
             <Code2 size={13} />
             <span>Sandbox</span>
+          </button>
+
+          {/* Share Public Link Button */}
+          <button
+            type="button"
+            onClick={() => {
+              const shareId = portfolioId || normalizedId;
+              const url = `${window.location.origin}/p/${shareId}`;
+              navigator.clipboard.writeText(url);
+              addToast("Public portfolio link copied to clipboard!", "success");
+            }}
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-black/10 dark:border-white/10 text-zinc-700 dark:text-zinc-300 text-xs font-semibold hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+            title="Copy public portfolio link"
+          >
+            <Share2 size={13} />
+            <span className="hidden lg:inline">Share</span>
           </button>
 
           {/* GitHub Dialog Button */}

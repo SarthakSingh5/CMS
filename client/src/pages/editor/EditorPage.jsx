@@ -9,6 +9,7 @@ import {
   Check,
   AlertCircle,
   Code2,
+  Share2,
 } from "lucide-react";
 import AuthContext from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
@@ -428,6 +429,20 @@ export function EditorPage() {
           >
             {isSaving ? <Loader2 size={13} className="animate-spin" /> : <Save size={13} />}
             <span>Save</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              const url = `${window.location.origin}/p/${templateId}`;
+              navigator.clipboard.writeText(url);
+              addToast("Public live portfolio link copied to clipboard!", "success");
+            }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-zinc-800 text-zinc-300 hover:bg-zinc-800 hover:text-white text-xs font-medium transition-colors cursor-pointer"
+            title="Copy public portfolio link"
+          >
+            <Share2 size={13} />
+            <span className="hidden md:inline">Share</span>
           </button>
 
           <button

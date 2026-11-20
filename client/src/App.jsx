@@ -27,6 +27,7 @@ import FeedbackPage from './pages/studio/FeedbackPage';
 import TemplatesPage from './pages/studio/TemplatesPage';
 import TemplateEditorPage from './pages/studio/TemplateEditorPage';
 import CvMakerPage from './pages/studio/CvMakerPage';
+import PublicPortfolioPage from './pages/PublicPortfolioPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 import './App.css';
@@ -35,11 +36,12 @@ const AppShell = () => {
   const location = useLocation();
   const isStudio = location.pathname.startsWith('/studio');
   const isEditor = location.pathname.startsWith('/editor');
-  const showLegacyNav = !['/', '/login', '/register'].includes(location.pathname) && !isStudio && !isEditor;
+  const isPublicView = location.pathname.startsWith('/p/');
+  const showLegacyNav = !['/', '/login', '/register'].includes(location.pathname) && !isStudio && !isEditor && !isPublicView;
 
   const fullWidthPaths = ['/', '/login', '/register', '/dashboard/content/new'];
   const isEditPage = location.pathname.startsWith('/dashboard/content/edit/');
-  const isFullWidth = fullWidthPaths.includes(location.pathname) || isEditPage || isStudio || isEditor;
+  const isFullWidth = fullWidthPaths.includes(location.pathname) || isEditPage || isStudio || isEditor || isPublicView;
 
   return (
     <>
@@ -52,6 +54,7 @@ const AppShell = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/view/:id" element={<PageViewer />} />
+          <Route path="/p/:identifier" element={<PublicPortfolioPage />} />
 
           {/* Studio Workspace */}
           <Route path="/studio" element={<PrivateRoute />}>

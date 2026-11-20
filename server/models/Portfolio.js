@@ -47,6 +47,14 @@ const portfolioSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.Mixed,
             default: null,
         },
+        views: {
+            type: Number,
+            default: 0,
+        },
+        isPublic: {
+            type: Boolean,
+            default: true,
+        },
     },
     {
         timestamps: true,

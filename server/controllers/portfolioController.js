@@ -125,3 +125,88 @@ export const deletePortfolio = async (req, res) => {
     }
 };
 
+// @desc    Get public portfolio by slug, ID, or templateId
+// @route   GET /api/portfolio/public/:identifier
+// @access  Public
+export const getPublicPortfolio = async (req, res) => {
+    try {
+        const { identifier } = req.params;
+        const isObjectId = /^[0-9a-fA-F]{24}$/.test(identifier);
+
+        let query;
+        if (isObjectId) {
+            query = { _id: identifier };
+        } else if (identifier.startsWith('template')) {
+            query = req.query.user
+                ? { user: req.query.user, templateId: identifier }
+                : { templateId: identifier };
+        } else {
+            query = { slug: identifier.toLowerCase() };
+        }
+
+        const portfolio = await Portfolio.findOne(query)
+            .populate('user', 'username avatar')
+            .sort({ updatedAt: -1 });
+
+        if (!portfolio) {
+            return res.status(404).json({ message: 'Public portfolio not found' });
+        }
+
+        // Increment view count asynchronously
+        portfolio.views = (portfolio.views || 0) + 1;
+        await portfolio.save();
+
+        return res.status(200).json({
+            success: true,
+            portfolioId: portfolio._id,
+            templateId: portfolio.templateId,
+            name: portfolio.name,
+            slug: portfolio.slug,
+            views: portfolio.views,
+            author: portfolio.user?.username || 'Developer',
+            avatar: portfolio.user?.avatar,
+            data: portfolio.content,
+            updatedAt: portfolio.updatedAt,
+        });
+    } catch (error) {
+        console.error('Error fetching public portfolio:', error);
+        return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+// @desc    Remix/fork a public portfolio into authenticated user account
+// @route   POST /api/portfolio/remix/:id
+// @access  Private
+export const remixPortfolio = async (req, res) => {
+    try {
+        const sourcePortfolio = await Portfolio.findById(req.params.id);
+
+        if (!sourcePortfolio) {
+            return res.status(404).json({ message: 'Source portfolio not found' });
+        }
+
+        // Upsert into user's account for that templateId
+        const remixed = await Portfolio.findOneAndUpdate(
+            { user: req.user._id, templateId: sourcePortfolio.templateId },
+            {
+                user: req.user._id,
+                templateId: sourcePortfolio.templateId,
+                name: `${sourcePortfolio.name || 'Portfolio'} (Remix)`,
+                content: sourcePortfolio.content,
+                status: 'Draft',
+            },
+            { new: true, upsert: true, setDefaultsOnInsert: true }
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: 'Portfolio remixed successfully',
+            portfolioId: remixed._id,
+            templateId: remixed.templateId,
+        });
+    } catch (error) {
+        console.error('Error remixing portfolio:', error);
+        return res.status(500).json({ message: 'Server error remixing portfolio', error: error.message });
+    }
+};
+
