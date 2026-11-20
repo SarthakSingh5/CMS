@@ -27,6 +27,7 @@ import FeedbackPage from './pages/studio/FeedbackPage';
 import TemplatesPage from './pages/studio/TemplatesPage';
 import TemplateEditorPage from './pages/studio/TemplateEditorPage';
 import CvMakerPage from './pages/studio/CvMakerPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 import './App.css';
 
@@ -82,6 +83,9 @@ const AppShell = () => {
           <Route path="/admin" element={<AdminRoute />}>
             <Route index element={<AdminPanel />} />
           </Route>
+
+          {/* Catch-all 404 */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
         </Suspense>
       </div>
