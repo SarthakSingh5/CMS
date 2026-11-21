@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { Sandbox } from 'e2b';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -193,6 +194,8 @@ function createSandboxSession(userId = 'guest', templateId = 'template1') {
     sandboxId,
     userId,
     templateId,
+    mode: 'virtual_sandbox', // 'e2b_cloud' | 'virtual_sandbox'
+    e2bInstance: null,
     previewUrl: `/studio/templates/${templateId}?sandboxId=${sandboxId}`,
     files,
     directories,
@@ -299,9 +302,40 @@ export const deployTemplate = async (req, res) => {
     sandbox.files.set('/home/user/tsconfig.json', tsconfigJson);
     sandbox.files.set('/home/user/README.md', readmeMd);
 
+    // E2B Cloud Micro-VM Bridge: provision real remote container if E2B_API_KEY is present
+    if (process.env.E2B_API_KEY) {
+      try {
+        console.log('[E2B] Provisioning remote Linux micro-VM for sandbox:', sandbox.sandboxId);
+        const cloudSbx = await Sandbox.create('nextjs-16-1-6-app', {
+          apiKey: process.env.E2B_API_KEY,
+          timeoutMs: 30 * 60 * 1000,
+        });
+        sandbox.e2bInstance = cloudSbx;
+        sandbox.mode = 'e2b_cloud';
+        const host = cloudSbx.getHost(3000);
+        sandbox.previewUrl = `https://${host}`;
+
+        // Deploy files to cloud micro-VM in parallel
+        await Promise.all([
+          cloudSbx.files.write('/home/user/app/page.tsx', pageTsx),
+          cloudSbx.files.write('/home/user/app/layout.tsx', layoutTsx),
+          cloudSbx.files.write('/home/user/app/globals.css', globalsCss),
+          cloudSbx.files.write(`/home/user/app/${templateInfo.component}`, adaptedComponent),
+          cloudSbx.files.write(`/home/user/app/${templateInfo.css}`, cssContent),
+          cloudSbx.files.write('/home/user/app/PortfolioTypes.ts', typesContent),
+          cloudSbx.files.write('/home/user/app/data.json', dataJson),
+        ]);
+        console.log('[E2B] Cloud container successfully ready at:', sandbox.previewUrl);
+      } catch (e2bErr) {
+        console.warn('[E2B] Cloud container initialization fallback to virtual VFS:', e2bErr.message);
+        sandbox.mode = 'virtual_sandbox';
+      }
+    }
+
     return res.status(200).json({
       sandboxId: sandbox.sandboxId,
       previewUrl: sandbox.previewUrl,
+      mode: sandbox.mode,
     });
   } catch (error) {
     console.error('Error deploying template to sandbox:', error);
@@ -463,6 +497,15 @@ export const writeFile = async (req, res) => {
       sandbox.directories.add(parentDir);
     }
 
+    // Remote cloud bridge if E2B micro-VM is attached
+    if (sandbox.e2bInstance) {
+      try {
+        await sandbox.e2bInstance.files.write(filePath, content || '');
+      } catch (e2bWriteErr) {
+        console.warn('[E2B] Cloud micro-VM write sync error:', e2bWriteErr.message);
+      }
+    }
+
     return res.status(200).json({ success: true, path: filePath });
   } catch (error) {
     console.error('Error writing sandbox file:', error);
@@ -523,6 +566,15 @@ export const deleteFile = async (req, res) => {
     }
     for (const d of sandbox.directories) {
       if (d.startsWith(prefix)) sandbox.directories.delete(d);
+    }
+
+    // Remote cloud bridge if E2B micro-VM is attached
+    if (sandbox.e2bInstance) {
+      try {
+        await sandbox.e2bInstance.files.remove(targetPath);
+      } catch (e2bDelErr) {
+        console.warn('[E2B] Cloud micro-VM file remove error:', e2bDelErr.message);
+      }
     }
 
     return res.status(200).json({ success: true });
@@ -598,12 +650,61 @@ export const kill = async (req, res) => {
   try {
     const { sandboxId } = req.body;
     if (sandboxId) {
+      const sandbox = activeSandboxes.get(sandboxId);
+      if (sandbox?.e2bInstance) {
+        try {
+          await sandbox.e2bInstance.kill();
+          console.log('[E2B] Terminated remote cloud micro-VM:', sandboxId);
+        } catch (e2bKillErr) {
+          console.warn('[E2B] Error terminating cloud micro-VM:', e2bKillErr.message);
+        }
+      }
       activeSandboxes.delete(sandboxId);
     }
     return res.status(200).json({ success: true, message: 'Sandbox terminated' });
   } catch (error) {
     console.error('Error killing sandbox:', error);
     return res.status(500).json({ error: error.message || 'Failed to kill sandbox' });
+  }
+};
+
+// @desc    Get sandbox container telemetry and runtime metrics
+// @route   GET /api/sandbox/telemetry
+export const getTelemetry = async (req, res) => {
+  try {
+    const sandboxId = req.query.id;
+    if (!sandboxId) {
+      return res.status(400).json({ error: 'Missing sandbox ID' });
+    }
+
+    const sandbox = activeSandboxes.get(sandboxId);
+    if (!sandbox) {
+      return res.status(404).json({ error: 'Sandbox session not found or expired' });
+    }
+
+    const uptimeMs = Date.now() - sandbox.createdAt;
+    const uptimeSec = Math.floor(uptimeMs / 1000);
+
+    const telemetry = {
+      sandboxId: sandbox.sandboxId,
+      templateId: sandbox.templateId,
+      mode: sandbox.mode, // 'e2b_cloud' | 'virtual_sandbox'
+      status: 'running',
+      runtime: sandbox.mode === 'e2b_cloud' ? 'Linux Micro-VM (Next.js 15)' : 'In-Memory VFS (React 19)',
+      uptimeSeconds: uptimeSec,
+      createdAt: sandbox.createdAt,
+      lastUpdated: sandbox.updatedAt,
+      filesCount: sandbox.files.size,
+      directoriesCount: sandbox.directories.size,
+      previewUrl: sandbox.previewUrl,
+      host: sandbox.mode === 'e2b_cloud' ? 'e2b.dev cloud infrastructure' : 'Forged Virtual Container Runtime',
+      memoryUsage: sandbox.mode === 'e2b_cloud' ? '512 MB reserved' : `${Math.max(1, Math.round(JSON.stringify(Array.from(sandbox.files.entries())).length / 1024))} KB VFS`,
+    };
+
+    return res.status(200).json({ telemetry });
+  } catch (error) {
+    console.error('Error getting sandbox telemetry:', error);
+    return res.status(500).json({ error: error.message || 'Failed to get telemetry' });
   }
 };
 

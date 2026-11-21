@@ -10,6 +10,7 @@ import {
   AlertCircle,
   Code2,
   Share2,
+  Activity,
 } from "lucide-react";
 import AuthContext from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
@@ -17,6 +18,7 @@ import CodeEditor from "../../components/editor/CodeEditor";
 import FileTabs from "../../components/editor/FileTabs";
 import FileTree from "../../components/editor/FileTree";
 import EditorPreview from "../../components/editor/EditorPreview";
+import ContainerTelemetryModal from "../../components/editor/ContainerTelemetryModal";
 import GitHubUploadDialog from "../../components/dialogs/GitHubUploadDialog";
 import VercelDeployDialog from "../../components/dialogs/VercelDeployDialog";
 import { DEFAULT_PORTFOLIO_DATA } from "../../lib/default-portfolio-data";
@@ -76,6 +78,8 @@ export function EditorPage() {
   // Sandbox state
   const [sandboxId, setSandboxId] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [containerMode, setContainerMode] = useState("virtual_sandbox");
+  const [showTelemetryModal, setShowTelemetryModal] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
   const [error, setError] = useState(null);
   const [portfolioData, setPortfolioData] = useState(DEFAULT_PORTFOLIO_DATA);
@@ -169,10 +173,12 @@ export function EditorPage() {
 
         const newId = deployRes.data.sandboxId;
         const newUrl = deployRes.data.previewUrl;
+        const newMode = deployRes.data.mode || "virtual_sandbox";
 
         if (isMounted) {
           setSandboxId(newId);
           setPreviewUrl(newUrl);
+          setContainerMode(newMode);
 
           // Open default page.tsx
           const defaultPath = "/home/user/app/page.tsx";
@@ -396,6 +402,28 @@ export function EditorPage() {
             <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
               In-Browser IDE
             </span>
+
+            {/* Container Telemetry Badge */}
+            <button
+              type="button"
+              onClick={() => setShowTelemetryModal(true)}
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono font-medium border transition-all cursor-pointer ${
+                containerMode === "e2b_cloud"
+                  ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.15)]"
+                  : "bg-zinc-800/80 border-zinc-700/60 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+              }`}
+              title="Click to inspect container telemetry & runtime specs"
+            >
+              <span
+                className={`w-1.5 h-1.5 rounded-full ${
+                  containerMode === "e2b_cloud"
+                    ? "bg-emerald-400 animate-pulse"
+                    : "bg-indigo-400"
+                }`}
+              />
+              <Activity size={10} className={containerMode === "e2b_cloud" ? "text-emerald-400" : "text-zinc-400"} />
+              <span>{containerMode === "e2b_cloud" ? "E2B Cloud VM" : "Virtual Sandbox"}</span>
+            </button>
           </div>
         </div>
 
@@ -547,6 +575,14 @@ export function EditorPage() {
         sandboxId={sandboxId || undefined}
         portfolioData={portfolioData}
         portfolioName={portfolioData.name || "My Portfolio"}
+      />
+
+      {/* Container Telemetry Modal */}
+      <ContainerTelemetryModal
+        open={showTelemetryModal}
+        onClose={() => setShowTelemetryModal(false)}
+        sandboxId={sandboxId}
+        initialMode={containerMode}
       />
     </div>
   );

@@ -11,6 +11,7 @@ import {
   deleteFile,
   extractData,
   kill,
+  getTelemetry,
 } from '../controllers/sandboxController.js';
 
 const router = express.Router();
@@ -42,6 +43,7 @@ router.post('/extract-data', extractData);
 router.post('/kill', kill);
 
 // Filesystem API
+router.get('/telemetry', getTelemetry);
 router.get('/files', listFiles);
 router.get('/files/read', readFile);
 router.post('/files/write', writeFile);
